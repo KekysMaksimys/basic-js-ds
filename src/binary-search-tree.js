@@ -73,9 +73,88 @@ class BinarySearchTree {
     } 
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  minRoot(base){
+    let prev = 0;
+    while(base !== null){
+      prev = base;
+      base = base.left;
+      if(base === null) return prev.data;
+    }
+    return prev.data;
+  }
+
+  minRoot(base){
+    let prev = 0;
+    while(base !== null){
+      prev = base;
+      base = base.left;
+      if(base === null) return prev.data;
+    }
+    return prev.data;
+  }
+
+  removeRoot(base, baza){
+    let cur = base;
+    let previousLeft = cur;
+    let previousRight = cur;
+    let nextLeft = 0;
+    let nextRight = 0;
+    let loop = true;
+    while(loop){
+    if(!cur) return null;
+      
+      if(baza < cur.data){
+        previousLeft = cur;
+        previousRight = undefined;
+        cur = cur.left;
+        if(cur === null) {
+          nextLeft = null;
+          nextRight = null;
+        } else {
+          nextLeft = cur.left;
+          nextRight = cur.right;
+        }
+      } else if (baza > cur.data) {
+        previousRight = cur;
+        previousLeft = undefined;
+        cur = cur.right;
+        if(cur === null) {
+          nextLeft = null;
+          nextRight = null;
+        } else {
+          nextLeft = cur.left;
+          nextRight = cur.right;
+        }
+      } else {
+        if((previousLeft == previousRight) && (nextLeft == nextRight) && (cur !== this.base)){
+          cur = cur.right;
+          return cur;
+        }
+        if((nextLeft === null) && (nextRight === null)){
+          previousLeft === undefined ? previousRight.right = null : previousLeft.left = null;
+          return 3;
+        }
+        
+        if(nextLeft === null){
+          previousRight.right = cur.right;
+          return 1;
+        }
+        if(nextRight === null){ 
+          previousLeft.left = cur.left;
+          return 2;
+        }
+
+        cur.data = this.minRoot(cur.right);
+        cur.right = this.removeRoot(cur.right, cur.data);
+        return cur;
+      }
+    }
+  }
+
+  remove(data) {
+    if(!this.base) return null;
+    this.removeRoot(this.base, data);
+    return this.base;
   }
 
   min(){
