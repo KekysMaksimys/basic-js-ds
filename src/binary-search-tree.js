@@ -83,71 +83,29 @@ class BinarySearchTree {
     return prev.data;
   }
 
-  minRoot(base){
-    let prev = 0;
-    while(base !== null){
-      prev = base;
-      base = base.left;
-      if(base === null) return prev.data;
-    }
-    return prev.data;
-  }
-
   removeRoot(base, baza){
-    let cur = base;
-    let previousLeft = cur;
-    let previousRight = cur;
-    let nextLeft = 0;
-    let nextRight = 0;
-    let loop = true;
-    while(loop){
-    if(!cur) return null;
-      
-      if(baza < cur.data){
-        previousLeft = cur;
-        previousRight = undefined;
-        cur = cur.left;
-        if(cur === null) {
-          nextLeft = null;
-          nextRight = null;
-        } else {
-          nextLeft = cur.left;
-          nextRight = cur.right;
-        }
-      } else if (baza > cur.data) {
-        previousRight = cur;
-        previousLeft = undefined;
-        cur = cur.right;
-        if(cur === null) {
-          nextLeft = null;
-          nextRight = null;
-        } else {
-          nextLeft = cur.left;
-          nextRight = cur.right;
-        }
-      } else {
-        if((previousLeft == previousRight) && (nextLeft == nextRight) && (cur !== this.base)){
-          cur = cur.right;
-          return cur;
-        }
-        if((nextLeft === null) && (nextRight === null)){
-          previousLeft === undefined ? previousRight.right = null : previousLeft.left = null;
-          return 3;
-        }
-        
-        if(nextLeft === null){
-          previousRight.right = cur.right;
-          return 1;
-        }
-        if(nextRight === null){ 
-          previousLeft.left = cur.left;
-          return 2;
-        }
-
-        cur.data = this.minRoot(cur.right);
-        cur.right = this.removeRoot(cur.right, cur.data);
-        return cur;
+    if (base === null) {
+      return;
+    }
+   if (baza < base.data) {
+      base.left = this.removeRoot(base.left, baza);
+      return base;
+   } else if (baza > base.data) {
+      base.right = this.removeRoot(base.right, baza);
+      return base;
+   } else {
+      if (base.left === null && base.right === null) {
+         base = null;
+         return base;
       }
+      if (base.left === null) return base.right;
+      if (base.right === null) return base.left;
+
+      let cur = this.minRoot(base.right);
+      base.data = cur;
+
+      base.right = this.removeRoot(base.right, cur);
+      return base;
     }
   }
 
@@ -159,40 +117,26 @@ class BinarySearchTree {
 
   min(){
     if(!this.base) return null;
-    let cur = this.base;
-    let baza = cur.data;
-    let minimum = cur.data;
-    let loop = true;
-    while(loop){
-      if(cur.left === null) return minimum;
-      if(baza == minimum) {
-        cur = cur.left;
-        baza = cur.data;
-      }
-      if(baza < minimum){
-        cur = cur.left;
-        minimum = cur.data;
-      }
+    let prev = 0;
+    let base = this.base
+    while(base !== null){
+      prev = base;
+      base = base.left;
+      if(base === null) return prev.data;
     }
+    return prev.data;
   }
 
   max(){
     if(!this.base) return null;
-    let cur = this.base;
-    let baza = cur.data;
-    let maximum = cur.data;
-    let loop = true;
-    while(loop){
-      if(cur.right === null) return maximum;
-      if(baza == maximum) {
-        cur = cur.right;
-        baza = cur.data;
-      }
-      if(baza > maximum){
-        cur = cur.right;
-        maximum = cur.data;
-      }
+    let prev = 0;
+    let base = this.base;
+    while(base !== null){
+      prev = base;
+      base = base.right;
+      if(base === null) return prev.data;
     }
+    return prev.data;
   }
 }
 
